@@ -137,7 +137,21 @@ function startCountdown() {
 }
 
 startCountdown();
+function playRomanticSound() {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
 
+    osc.type = "sine";
+    osc.frequency.value = 440;
+    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.4);
+}
 /* YES CLICKED */
 function yesClicked() {
     document.getElementById("music").play();
@@ -170,7 +184,7 @@ function yesClicked() {
 
         </div>
     `;
-
+playRomanticSound();
     const images = [
         "pic1.jpeg",
         "pic2.jpeg",
