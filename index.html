@@ -67,14 +67,19 @@ button {
 <body>
 
 <div class="box">
-    <h1>💖 Will you be my Valentine, Kamaluuuuuu? 💖</h1>
+    <h1>💖 Will you be my Valentine? 💖</h1>
+    <h3 id="countdown" style="color:#ff4d6d;"></h3>
     <button id="yes" onclick="yesClicked()">YES 💘</button>
     <button id="no">NO 💔</button>
 </div>
 
-<!-- Romantic Music -->
+<!-- <!-- Romantic Music -->
 <audio id="music" loop>
     <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Komiku/Its_time_for_adventure_/Komiku_-_12_-_Friends.mp3">
+</audio> -->
+
+    <audio id="music" loop preload="auto">
+    <source src="music.mp3" type="audio/mpeg">
 </audio>
 
 <script>
@@ -98,6 +103,30 @@ setInterval(() => {
     document.body.appendChild(heart);
     setTimeout(() => heart.remove(), 6000);
 }, 300);
+    
+function startCountdown() {
+    const valentineDate = new Date("February 14, 2026 00:00:00").getTime();
+
+    setInterval(() => {
+        const now = new Date().getTime();
+        const distance = valentineDate - now;
+
+        if (distance < 0) {
+            document.getElementById("countdown").innerHTML = "💖 It's Valentine’s Day! 💖";
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("countdown").innerHTML =
+            `⏳ Valentine’s Day in ${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }, 1000);
+}
+
+startCountdown();
 
 /* YES CLICKED */
 function yesClicked() {
