@@ -5,8 +5,10 @@
 
 <style>
 body {
+    margin: 0;
     background-color: pink;
     height: 100vh;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,6 +20,7 @@ body {
     padding: 30px;
     border-radius: 15px;
     text-align: center;
+    z-index: 2;
 }
 
 button {
@@ -39,20 +42,45 @@ button {
     color: white;
     position: absolute;
 }
-</style>
 
+/* HEARTS */
+.heart {
+    position: fixed;
+    bottom: -10px;
+    font-size: 24px;
+    animation: floatUp 6s linear infinite;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-110vh); opacity: 0; }
+}
+
+/* IMAGE POP */
+@keyframes pop {
+    0% { transform: scale(0.3); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+</style>
 </head>
+
 <body>
 
 <div class="box">
-<h1>💖 Will you be my Valentine? 💖</h1>
-<button id="yes" onclick="yesClicked()">YES 💘</button>
-<button id="no">NO 💔</button>
+    <h1>💖 Will you be my Valentine, Kamaluuuuuu? 💖</h1>
+    <button id="yes" onclick="yesClicked()">YES 💘</button>
+    <button id="no">NO 💔</button>
 </div>
+
+<!-- Romantic Music -->
+<audio id="music" loop>
+    <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Komiku/Its_time_for_adventure_/Komiku_-_12_-_Friends.mp3">
+</audio>
 
 <script>
 const noBtn = document.getElementById("no");
 
+/* EXTRA EVIL NO BUTTON */
 noBtn.addEventListener("mouseover", () => {
     const x = Math.random() * (window.innerWidth - 100);
     const y = Math.random() * (window.innerHeight - 50);
@@ -60,8 +88,60 @@ noBtn.addEventListener("mouseover", () => {
     noBtn.style.top = y + "px";
 });
 
+/* FLOATING HEARTS */
+setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+}, 300);
+
+/* YES CLICKED */
 function yesClicked() {
-    document.body.innerHTML = "<h1 style='color:#ff4d6d;text-align:center;'>💖 YAY! Happy Valentine’s Day 💖</h1>";
+    document.getElementById("music").play();
+
+    document.body.innerHTML = `
+        <div style="
+            text-align:center;
+            height:100vh;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            background:pink;
+        ">
+            <h1 style="color:#ff4d6d;">
+                😈 I KNEW YOU’D SAY YES 😈
+            </h1>
+            <h2>💖 Happy Valentine’s Day, Babyyyyy 💖</h2>
+
+            <img id="slideshow"
+                src="https://i.imgur.com/9XqJZ5C.png"
+                style="
+                    width:260px;
+                    border-radius:20px;
+                    margin-top:20px;
+                    box-shadow:0 10px 20px rgba(0,0,0,0.3);
+                    animation: pop 0.6s ease;
+                "
+            >
+        </div>
+    `;
+
+    const images = [
+        "https://i.imgur.com/9XqJZ5C.png",
+        "https://i.imgur.com/3ZQ3ZQy.png",
+        "https://i.imgur.com/JQZQZQZ.png"
+    ];
+
+    let i = 0;
+    setInterval(() => {
+        i = (i + 1) % images.length;
+        document.getElementById("slideshow").src = images[i];
+    }, 2000);
 }
 </script>
 
